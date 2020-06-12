@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "async/await API for sqlite3",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/a-was/node-sqlite3.git"
