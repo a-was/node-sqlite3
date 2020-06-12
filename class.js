@@ -71,4 +71,4 @@ class SQLite3 {
     }
 }
 
-module.exports.SQLite3 = SQLite3
+module.exports = SQLite3
