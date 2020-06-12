@@ -1,80 +1,74 @@
 const sqlite3 = require('sqlite3').verbose()
 
-var db = null
+class SQLite3 {
+    constructor(path) {
+        this.db = null
+        this.path = path
+    }
 
-exports.db = db
+    async open() {
+        return new Promise((resolve, reject) => {
+            this.db = new sqlite3.Database(this.path, function (err) {
+                if (err) reject(err)
+                else resolve(this.path + " opened")
+            })
+        })
+    }
 
-exports.open = function (path) {
-    return new Promise((resolve) => {
-        this.db = new sqlite3.Database(path,
-            function (err) {
-                if (err) reject("Open error: " + err.message)
-                else resolve(path + " opened")
-            }
-        )
-    })
-}
-
-// any query: insert/delete/update
-exports.run = function (query) {
-    return new Promise((resolve, reject) => {
-        this.db.run(query,
-            function (err) {
-                if (err) reject(err.message)
+    async run(query) {
+        return new Promise((resolve, reject) => {
+            this.db.run(query, function (err) {
+                if (err) reject(err)
                 else resolve(true)
             })
-    })
-}
-
-// first row read
-exports.get = function (query, params) {
-    return new Promise((resolve, reject) => {
-        this.db.get(query, params, function (err, row) {
-            if (err) reject("Read error: " + err.message)
-            else {
-                resolve(row)
-            }
         })
-    })
-}
+    }
 
-// set of rows read
-exports.all = function (query, params) {
-    return new Promise((resolve, reject) => {
-        if (params == undefined) params = []
-
-        this.db.all(query, params, function (err, rows) {
-            if (err) reject("Read error: " + err.message)
-            else {
-                resolve(rows)
-            }
-        })
-    })
-}
-
-// each row returned one by one
-exports.each = function (query, params, action) {
-    return new Promise((resolve, reject) => {
-        var db = this.db
-        db.serialize(function () {
-            db.each(query, params, function (err, row) {
-                if (err) reject("Read error: " + err.message)
-                else {
-                    if (row) {
-                        action(row)
-                    }
-                }
+    async get(query, params) {
+        return new Promise((resolve, reject) => {
+            this.db.get(query, params, function (err, row) {
+                if (err) reject(err)
+                else resolve(row)
             })
-            db.get("", function (err, row) {
+        })
+    }
+
+    async all(query, params) {
+        return new Promise((resolve, reject) => {
+            if (params == undefined) params = []
+
+            this.db.all(query, params, function (err, rows) {
+                if (err) reject(err)
+                else resolve(rows)
+            })
+        })
+    }
+
+    async each(query, params, action) {
+        return new Promise((resolve, reject) => {
+            var db = this.db
+            db.serialize(function () {
+                db.each(query, params, function (err, row) {
+                    if (err) reject(err)
+                    else {
+                        if (row) {
+                            action(row)
+                        }
+                    }
+                })
                 resolve(true)
             })
         })
-    })
+    }
+
+    async close() {
+        return new Promise((resolve, reject) => {
+            this.db.close(function (err) {
+                if (err) reject(err)
+                else resolve(true)
+            })
+        })
+    }
 }
 
-exports.close = function () {
-    return new Promise((resolve, reject) => {
-        this.db.close()
-        resolve(true)
-    })
-}
+module.exports = SQLite3

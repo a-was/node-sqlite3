@@ -9,23 +9,23 @@ async/await API for making sqlite3 queries in node
 ### Usage
 
 ```javascript
-const sqlite3 = require('node-sqlite3')
+const SQLite3 = require('node-sqlite3')
 
 async function main() {
-    // must open db first
-    await sqlite3.open(':memory:')  // or file.sqlite3
+    const db = new SQLite3(':memory:')  // or file.sqlite3
+    await db.open()  // must open first
 
-    await sqlite3.run("CREATE TABLE users (id INT, name TEXT)")
-    await sqlite3.run("INSERT INTO users (id, name) VALUES (1, 'foo')")
+    await db.run("CREATE TABLE users (id INT, name TEXT)")
+    await db.run("INSERT INTO users (id, name) VALUES (1, 'foo')")
 
-    var rows = await sqlite3.all("SELECT id, name FROM users WHERE id = ?", [1])
+    var rows = await db.all("SELECT id, name FROM users WHERE id = ?", [1])  // params must be iterable
     rows.forEach(row => console.log(row.id, row.name))
 
-    await sqlite3.each("SELECT * FROM users", [], function(row) {
+    await db.each("SELECT * FROM users", [], function(row) {
         console.log(row)
     })
 
-    await sqlite3.close()
+    await db.close()
 }
 
 main()
