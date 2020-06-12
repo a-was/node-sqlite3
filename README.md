@@ -30,3 +30,22 @@ async function main() {
 
 main()
 ```
+
+
+#### With express
+
+```javascript
+const express = require('express')
+const SQLite3 = require('node-sqlite3')
+
+var app = express()
+
+var db = new SQLite3('some.db')
+db.open()  // just open without await
+
+app.get('/', async (req, res) => {
+    res.json(await db.all('SELECT * FROM table'))
+})
+
+app.listen(5000)
+```
