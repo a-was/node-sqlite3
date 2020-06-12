@@ -1,0 +1,26 @@
+{
+  "name": "node-sqlite3",
+  "version": "1.0.0",
+  "description": "async/await API for sqlite3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-was/node-sqlite3.git"
+  },
+  "keywords": [
+    "sqlite",
+    "sqlite3"
+  ],
+  "author": "Adam Wasilewski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a-was/node-sqlite3/issues"
+  },
+  "homepage": "https://github.com/a-was/node-sqlite3#readme",
+  "dependencies": {
+    "sqlite3": "^4.2.0"
+  }
+}
