@@ -12,7 +12,7 @@
     "sqlite3"
   ],
   "author": "Adam Wasilewski",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/a-was/node-sqlite3/issues"
   },
